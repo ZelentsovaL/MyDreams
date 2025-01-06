@@ -8,4 +8,4 @@ mig_down:
 	alembic downgrade -1
 
 dev:
-	poetry run uvicorn main:app --reload --host 0.0.0.0 --port 9000
+	poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000

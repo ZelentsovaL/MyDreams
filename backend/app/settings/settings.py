@@ -8,6 +8,10 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
 
     API_BASE_PORT: int
+
+    JWT_ALGORITHM: str
+    JWT_SECRET_KEY: str
+    JWT_ACCESS_TOKEN_LIFETIME_HOURS: int
     
     class Config:
         env_file = ".env"
