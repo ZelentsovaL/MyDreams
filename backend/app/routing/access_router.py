@@ -6,6 +6,8 @@ from app.schema.access import Access
 from app.database.connector.connector import get_session
 from app.database.models.models import User, UserProfile
 
+from app.schema.token.access_token import AccessToken
+from app.security.jwt_provider.jwtmanager import JWTManager
 from app.services.user_service import UserService
 
 from sqlalchemy import (
@@ -27,7 +29,13 @@ async def register(access: Access, session: AsyncSession = Depends(get_session))
     
 @access_router.post("/login")
 async def login(access: Access, session: Annotated[AsyncSession, Depends(get_session)]):
-    logined = await UserService(session).login(access)
-    if not logined.success:
-        raise HTTPException(status_code=400, detail=logined.error)
-    return logined.value
+    user = await UserService(session).login(access)
+    if not user.success:
+        raise HTTPException(status_code=400, detail=user.error)
+    
+    token = JWTManager().encode_token({"userId": user.value.user_id})
+    return AccessToken(
+        access_token=token,
+        token_type="Bearer"
+    )
+    
