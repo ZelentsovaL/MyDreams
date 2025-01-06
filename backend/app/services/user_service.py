@@ -29,4 +29,4 @@ class UserService:
             return result.error("Такого пользователя не существует.")
         if user.password != access.password:
             return result.error("Неверный пароль.")
-        return result.success(user.user_id)
+        return result.success(user)
