@@ -8,9 +8,9 @@ from app.utils.ext.result import Result, error, success
 from app.security.oauth import oauth_scheme
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from jwt import decode, encode
-from app.settings.settings import settings
+import jwt
 
+from app.settings.settings import settings
 from datetime import datetime, timedelta
 
 async def get_current_user(token: str = Depends(oauth_scheme), session: AsyncSession = Depends(get_session)):
@@ -27,7 +27,7 @@ async def get_current_user(token: str = Depends(oauth_scheme), session: AsyncSes
         headers={"WWW-Authenticate": "Bearer"},
     )
     
-    user = await UserRepository(session).get_by_filter_one(userId=username)
+    user = await UserRepository(session).get_by_filter_one(user_id=username)
     if user is None:
         raise HTTPException(
             status_code=401,
@@ -49,11 +49,11 @@ class JWTManager:
         current_time = datetime.utcnow()
         expire = timedelta(hours=self.ACCESS_TOKEN_LIFETIME)
         jwt_payload.update({"exp": current_time + expire})
-        return encode(jwt_payload, self.SECRET_KEY, algorithm=self.ALGORITHM)
+        return jwt.encode(jwt_payload, self.SECRET_KEY, algorithm=self.ALGORITHM)
     
     def decode_token(self, token: str) -> Result[dict]:
         try:
-            return success(decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM]))
+            return success(jwt.decode(token, self.SECRET_KEY, algorithms=[self.ALGORITHM]))
         except:
             return error("Invalid token")
     

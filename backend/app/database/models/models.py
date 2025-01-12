@@ -1,3 +1,4 @@
+from typing import List
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
     Mapped,
@@ -17,7 +18,9 @@ class User(Base):
 
     email: Mapped[str] = mapped_column(nullable=True)
 
-    user_profile: Mapped["UserProfile"] = relationship("UserProfile", back_populates="user")
+    user_profile: Mapped["UserProfile"] = relationship("UserProfile", back_populates="user")\
+
+    wishes: Mapped[List["Wish"]] = relationship("Wish", back_populates="user")
 
 class UserProfile(Base):
     __tablename__ = 'user_profiles'
@@ -30,3 +33,15 @@ class UserProfile(Base):
     patronymic: Mapped[str] = mapped_column()
 
     user: Mapped["User"] = relationship("User", back_populates="user_profile")
+
+class Wish(Base):
+    __tablename__ = "users_wishes"
+
+    wish_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    wish: Mapped[str] = mapped_column()
+    price: Mapped[float] = mapped_column()
+    source_url: Mapped[str] = mapped_column()
+    user: Mapped["User"] = relationship("User", back_populates="wishes")
+
+

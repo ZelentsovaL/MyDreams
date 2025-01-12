@@ -21,12 +21,13 @@ class UserService:
             return result.error("Такой пользователь уже есть.")
 
         
-        
+    async def get_all_wishes(self, user_id: int) -> result.Result[None]:
+        return await self._repo.get_all_wishes(user_id)
     
-    async def login(self, access: Access) -> result.Result[None]:
-        user = await self._repo.get_by_login(access.username)
+    async def login(self, login, password) -> result.Result[None]:
+        user = await self._repo.get_by_login(login)
         if user is None:
             return result.error("Такого пользователя не существует.")
-        if user.password != access.password:
+        if user.password != password:
             return result.error("Неверный пароль.")
         return result.success(user)

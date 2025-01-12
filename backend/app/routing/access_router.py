@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, Form, HTTPException
 
 from app.schema.access import Access
 
@@ -28,8 +28,8 @@ async def register(access: Access, session: AsyncSession = Depends(get_session))
     return registered.value
     
 @access_router.post("/login")
-async def login(access: Access, session: Annotated[AsyncSession, Depends(get_session)]):
-    user = await UserService(session).login(access)
+async def login(username: str = Form(), password: str = Form(), session: AsyncSession = Depends(get_session)):
+    user = await UserService(session).login(username, password)
     if not user.success:
         raise HTTPException(status_code=400, detail=user.error)
     
