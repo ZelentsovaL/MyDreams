@@ -3,6 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from app.database.connector.connector import get_session
 from app.database.models.models import User
 from app.schema.wishes.create_wish import CreateWish
+from app.schema.wishes.update_wish import UpdateWish
 from app.security.jwt_provider.jwtmanager import get_current_user
 
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -36,3 +37,7 @@ async def delete_wish(wish_id: int, user: User = Depends(get_current_user), sess
         )
     
     return deleted_rows
+
+@wish_router.put("/update/{wish_id}")
+async def update_wish(wish_id: int, update_wish: UpdateWish, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await WishService(session).update_wish(user.user_id, wish_id, update_wish)
