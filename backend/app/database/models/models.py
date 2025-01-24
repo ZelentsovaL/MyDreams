@@ -31,7 +31,7 @@ class UserProfile(Base):
     surname: Mapped[str] = mapped_column()
     name: Mapped[str] = mapped_column()
     patronymic: Mapped[str] = mapped_column()
-
+    photo: Mapped[str] = mapped_column(nullable=True)
     user: Mapped["User"] = relationship("User", back_populates="user_profile")
 
 class Wish(Base):
@@ -42,6 +42,7 @@ class Wish(Base):
     wish: Mapped[str] = mapped_column()
     price: Mapped[float] = mapped_column()
     source_url: Mapped[str] = mapped_column()
+    is_secret: Mapped[bool] = mapped_column()
     user: Mapped["User"] = relationship("User", back_populates="wishes")
 
 

@@ -37,7 +37,7 @@ class AbstractRepository(ABC):
         query = update(self.model).where(self.model.id == id).values(**kwargs).returning(self.model)
         result = await self._session.execute(query)
         return result.scalars().first()
-
+    
     async def delete_by_id(self, id):
         result = self._session.execute(delete(self.model).where(self.model.id == id))
         return result.rowcount

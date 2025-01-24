@@ -14,3 +14,6 @@ class WishService:
 
     async def create_wish(self, user_id: str, createWish: CreateWish):
         return await self._repo.create(user_id=user_id, wish=createWish.wish, price=createWish.price, source_url=createWish.source_url)
+    
+    async def delete_wish(self, user_id: str, wish_id: str):
+        return await self._repo.delete_wish(user_id=user_id, wish_id=wish_id)

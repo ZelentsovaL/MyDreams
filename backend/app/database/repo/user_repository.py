@@ -1,7 +1,7 @@
 from sqlalchemy import RowMapping, and_, insert, select
 from app.database.abc.repository import AbstractRepository
 
-from app.database.models.models import User, Wish
+from app.database.models.models import User, UserProfile, Wish
 
 class UserRepository(AbstractRepository):
     model = User
@@ -25,6 +25,16 @@ class UserRepository(AbstractRepository):
         await self.commit()
         return result.scalars().first()
     
+
+    async def search_by_login(self, login: str):
+        query = (
+            select(self.model.username)
+            .where(self.model.username.contains(login))
+        )
+
+        result = await self._session.execute(query)
+        return result.mappings().all()
+
     async def get_by_login(self, username: str):
         query = (
             select(self.model)

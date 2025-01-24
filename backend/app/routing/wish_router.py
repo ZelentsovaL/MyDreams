@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, HTTPException
 
 from app.database.connector.connector import get_session
 from app.database.models.models import User
@@ -25,3 +25,14 @@ async def get_wishes(user: User = Depends(get_current_user), session: AsyncSessi
 @wish_router.post("/create")
 async def create_wish(create_wish: CreateWish, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await WishService(session).create_wish(user.user_id, create_wish)
+
+@wish_router.delete("/delete/{wish_id}")
+async def delete_wish(wish_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    deleted_rows = await WishService(session).delete_wish(user.user_id, wish_id)
+    if (deleted_rows == 0):
+        raise HTTPException(
+            status_code=400,
+            detail="Wish not found",
+        )
+    
+    return deleted_rows
