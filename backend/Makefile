@@ -12,3 +12,6 @@ dev:
 
 deploy:
 	docker-compose -f docker/docker-compose.yml --env-file .env --project-directory . up --build -d
+
+down:
+	docker-compose -f docker/docker-compose.yml --env-file .env --project-directory . down
