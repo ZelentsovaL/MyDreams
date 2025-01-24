@@ -21,7 +21,7 @@ services:
     container_name: mydreams_api
     build:
       context: .
-      dockerfile: docker/Dockerfile.backend
+      dockerfile: docker/Dockerfile
     restart: always
     command: ["poetry", "run", "uvicorn", "main:api", "--host", "0.0.0.0", "--port", "8000"]
     env_file:
@@ -30,5 +30,5 @@ services:
       - ${API_BASE_PORT}:8000
     
     depends_on:
-      - speedsolver.database
+      - mydreams_db
 
