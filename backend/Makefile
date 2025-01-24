@@ -9,3 +9,6 @@ mig_down:
 
 dev:
 	poetry run uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
+deploy:
+	docker-compose -f docker/docker-compose.yml --env-file .env --project-directory . up --build -d
