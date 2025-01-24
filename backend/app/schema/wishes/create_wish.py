@@ -5,3 +5,4 @@ class CreateWish(BaseModel):
     wish: str
     price: float
     source_url: str
+    is_secret: bool
