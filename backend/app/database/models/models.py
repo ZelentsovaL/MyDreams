@@ -45,4 +45,10 @@ class Wish(Base):
     is_secret: Mapped[bool] = mapped_column()
     user: Mapped["User"] = relationship("User", back_populates="wishes")
 
+class Subscriptions(Base):
+    __tablename__ = "subscriptions"
+
+    sub_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    subscriber_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
 

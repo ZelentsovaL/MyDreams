@@ -28,7 +28,7 @@ class UserRepository(AbstractRepository):
 
     async def search_by_login(self, login: str):
         query = (
-            select(self.model.username)
+            select(self.model.username, self.model.user_id)
             .where(self.model.username.contains(login))
         )
 
