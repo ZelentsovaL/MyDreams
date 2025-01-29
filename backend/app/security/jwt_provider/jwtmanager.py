@@ -17,7 +17,7 @@ async def get_current_user(token: str = Depends(oauth_scheme), session: AsyncSes
 
     payload = JWTManager().decode_token(token)
     if payload.error:
-        return error(payload.error)
+        return None
     
     username: str = payload.value.get("userId")
     if username is None:
@@ -34,7 +34,7 @@ async def get_current_user(token: str = Depends(oauth_scheme), session: AsyncSes
             detail="User not found",
             headers={"WWW-Authenticate": "Bearer"},
         ) 
-    return success(user)
+    return user
 
 class JWTManager:
 
