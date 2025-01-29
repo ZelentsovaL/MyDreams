@@ -10,6 +10,9 @@ class SubscribeService:
         self._session = session
         self._repo = SubscribeRepository(session)
 
+    async def get_subscriptions(self, user_id: int):
+        return await self._repo.get_subscriptions(user_id)
+
     async def unsubscribe(self, user_id: int, subscriber_id: int) -> None:
         return await self._repo.unsubscribe(user_id, subscriber_id)
 

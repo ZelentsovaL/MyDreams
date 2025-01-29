@@ -27,6 +27,10 @@ async def subscribe(user_id: int, user: User = Depends(get_current_user), sessio
 async def unsubscribe(user_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await SubscribeService(session).unsubscribe(user.user_id, user_id)
 
+@friends_router.get("/subscriptions")
+async def get_subscriptions(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await SubscribeService(session).get_subscriptions(user.user_id)
+
 @friends_router.get("/subscribers/")
 async def get_subscribers(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await SubscribeService(session).get_subscribers(user.user_id)

@@ -4,6 +4,19 @@ from app.database.models.models import Subscriptions, User
 class SubscribeRepository(AbstractRepository):
     model = Subscriptions
 
+    async def get_subscriptions(self, user_id: int):
+        query = (
+            select(User.username, User.user_id)
+            .select_from(self.model)
+            .where(self.model.user_id == user_id)
+            .join(User, self.model.subscriber_id == User.user_id)
+
+        )
+
+        result = await self._session.execute(query)
+        subscriptions = result.mappings().all()
+        return subscriptions
+
 
     async def unsubscribe(self, user_id: int, subscriber_id: int) -> None:
         query = (
