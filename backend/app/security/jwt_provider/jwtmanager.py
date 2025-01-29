@@ -33,8 +33,8 @@ async def get_current_user(token: str = Depends(oauth_scheme), session: AsyncSes
             status_code=401,
             detail="User not found",
             headers={"WWW-Authenticate": "Bearer"},
-        )
-    return user
+        ) 
+    return success(user)
 
 class JWTManager:
 
