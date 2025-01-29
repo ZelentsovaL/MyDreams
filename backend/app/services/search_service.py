@@ -21,4 +21,4 @@ class SearchService:
                 status_code=400,
                 detail="Пользователь не найден."
             )
-        return await WishRepository(self._session).get_by_filter_one(user_id=user.user_id)
+        return await WishRepository(self._session).get_by_filter_all(user_id=user.user_id)

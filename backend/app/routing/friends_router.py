@@ -21,8 +21,12 @@ async def search_by_username(username: str, session: Annotated[AsyncSession, Dep
 
 @friends_router.post("/subscribe/{user_id}")
 async def subscribe(user_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    return await SubscribeService(session).subscribe(user_id, user.user_id)
+    return await SubscribeService(session).subscribe(user.user_id, user_id)
     
+@friends_router.delete("/unsubscribe/{user_id}")
+async def unsubscribe(user_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await SubscribeService(session).unsubscribe(user.user_id, user_id)
+
 @friends_router.get("/subscribers/")
 async def get_subscribers(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await SubscribeService(session).get_subscribers(user.user_id)
