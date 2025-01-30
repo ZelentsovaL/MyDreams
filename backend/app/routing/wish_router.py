@@ -19,7 +19,7 @@ wish_router = APIRouter(
     tags=["Wishes"],
 )
 
-@wish_router.get("/getall")
+@wish_router.get("/getall", response_model=list[GetWish])
 async def get_wishes(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     all_wishes = await UserService(session).get_all_wishes(user.user_id)
     return all_wishes
