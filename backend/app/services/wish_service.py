@@ -36,7 +36,7 @@ class WishService:
     
     async def upload_photo(self, wish_id: int, file: UploadFile):
         file_path = f"photos/{wish_id}.{file.filename.split('.')[-1]}"
-        wish: Wish = await WishService(self.session).update_one(wish_id, photo=file_path)
+        wish: Wish = await WishRepository(self._session).update_one(wish_id, wish_photo=file_path)
         async with aiofiles.open(file_path, "wb") as out_file:
             content = await file.read()  # async read
             await out_file.write(content)  # async write

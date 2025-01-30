@@ -15,3 +15,6 @@ deploy:
 
 down:
 	docker-compose -f docker/docker-compose.yml --env-file .env --project-directory . down
+
+kill:
+	taskkill /f /im python.exe
