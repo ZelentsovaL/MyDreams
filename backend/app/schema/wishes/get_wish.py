@@ -9,4 +9,4 @@ class GetWish(BaseModel):
 
     @field_validator('wish_photo')
     def validator(cls, v):
-        return f"http://mydreams.speedsolver.ru/{v}"
+        return f"https://mydreams.speedsolver.ru/{v}"
