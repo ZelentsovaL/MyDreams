@@ -39,10 +39,11 @@ class Wish(Base):
 
     wish_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
-    wish: Mapped[str] = mapped_column()
-    price: Mapped[float] = mapped_column()
-    source_url: Mapped[str] = mapped_column()
-    is_secret: Mapped[bool] = mapped_column()
+    wish: Mapped[str]
+    price: Mapped[float]
+    source_url: Mapped[str]
+    is_secret: Mapped[bool]
+    wish_photo: Mapped[str] = mapped_column(nullable=True)
     user: Mapped["User"] = relationship("User", back_populates="wishes")
 
 class Subscriptions(Base):

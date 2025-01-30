@@ -1,5 +1,10 @@
 
 
+import aiofiles
+from fastapi import UploadFile
+from sqlalchemy import UUID
+from app.database.models.models import User, Wish
+from app.database.repo.user_repository import UserRepository
 from app.database.repo.wish_repository import WishRepository
 
 
@@ -28,3 +33,12 @@ class WishService:
             update_wish.new_source_url,
             update_wish.is_secret
         )
+    
+    async def upload_photo(self, wish_id: int, file: UploadFile):
+        file_path = f"photos/{wish_id}.{file.filename.split('.')[-1]}"
+        wish: Wish = await WishService(self.session).update_one(wish_id, photo=file_path)
+        async with aiofiles.open(file_path, "wb") as out_file:
+            content = await file.read()  # async read
+            await out_file.write(content)  # async write
+
+        return wish

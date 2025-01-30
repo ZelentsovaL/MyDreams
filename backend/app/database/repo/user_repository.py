@@ -1,4 +1,4 @@
-from sqlalchemy import RowMapping, and_, insert, select
+from sqlalchemy import RowMapping, and_, insert, select, update
 from app.database.abc.repository import AbstractRepository
 
 from app.database.models.models import User, UserProfile, Wish
@@ -6,7 +6,9 @@ from app.database.models.models import User, UserProfile, Wish
 class UserRepository(AbstractRepository):
     model = User
 
+
     async def get_all_wishes(self, userId: str):
+        
         query = (
             select(Wish)
             .select_from(Wish)

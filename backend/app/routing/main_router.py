@@ -9,6 +9,8 @@ main_router = APIRouter(
     prefix="/v1",
 )
 
+
+
 main_router.include_router(access_router)
 main_router.include_router(profile_router)
 main_router.include_router(wish_router)

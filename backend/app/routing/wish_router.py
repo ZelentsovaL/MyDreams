@@ -1,8 +1,9 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 
 from app.database.connector.connector import get_session
 from app.database.models.models import User
 from app.schema.wishes.create_wish import CreateWish
+from app.schema.wishes.get_wish import GetWish
 from app.schema.wishes.update_wish import UpdateWish
 from app.security.jwt_provider.jwtmanager import get_current_user
 
@@ -26,6 +27,10 @@ async def get_wishes(user: User = Depends(get_current_user), session: AsyncSessi
 @wish_router.post("/create")
 async def create_wish(create_wish: CreateWish, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await WishService(session).create_wish(user.user_id, create_wish)
+
+@wish_router.post("/photo/create/{wish_id}", response_model=GetWish)
+async def create_wish_photo(wish_id: int, photo: UploadFile = File(...), user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await WishService(session).upload_photo(user.user_id)
 
 @wish_router.delete("/delete/{wish_id}")
 async def delete_wish(wish_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
