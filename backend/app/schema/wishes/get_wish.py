@@ -5,7 +5,7 @@ class GetWish(BaseModel):
     price: float
     source_url: str | None
     is_secret: bool
-    wish_photo: str
+    wish_photo: str | None
 
     @field_validator('wish_photo')
     def validator(cls, v):
