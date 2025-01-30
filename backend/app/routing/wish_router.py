@@ -30,7 +30,7 @@ async def create_wish(create_wish: CreateWish, user: User = Depends(get_current_
 
 @wish_router.post("/photo/create/{wish_id}", response_model=GetWish)
 async def create_wish_photo(wish_id: int, photo: UploadFile = File(...), user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    return await WishService(session).upload_photo(user.user_id)
+    return await WishService(session).upload_photo(user.user_id, photo)
 
 @wish_router.delete("/delete/{wish_id}")
 async def delete_wish(wish_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
