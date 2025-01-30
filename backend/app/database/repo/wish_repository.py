@@ -6,7 +6,7 @@ from app.database.models.models import Wish
 class WishRepository(AbstractRepository):
     model = Wish
     
-    async def update_one(self, wish_id, **kwargs):
+    async def update_one(self, wish_id: int, **kwargs):
         query = update(self.model).where(self.model.wish_id == wish_id).values(**kwargs).returning(self.model)
         result = await self._session.execute(query)
         await self._session.commit()
