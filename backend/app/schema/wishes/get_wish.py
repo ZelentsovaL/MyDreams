@@ -1,6 +1,7 @@
 from pydantic import BaseModel, field_validator
 
 class GetWish(BaseModel):
+    wish_id: int
     wish: str
     price: float
     source_url: str | None

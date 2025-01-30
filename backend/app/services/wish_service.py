@@ -18,6 +18,9 @@ class WishService:
         self._session = session
         self._repo = WishRepository(self._session)
 
+    async def complete_wish(self, user_id: str, wish_id: str):
+        return await self._repo.complete_wish(wish_id, user_id)
+
     async def create_wish(self, user_id: str, createWish: CreateWish):
         return await self._repo.create(user_id=user_id, wish=createWish.wish, price=createWish.price, source_url=createWish.source_url, is_secret=createWish.is_secret)
     

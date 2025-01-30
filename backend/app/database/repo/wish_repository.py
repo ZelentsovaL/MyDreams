@@ -1,12 +1,40 @@
-from sqlalchemy import and_, delete, select, update
+from sqlalchemy import and_, delete, insert, select, update
 from app.database.abc.repository import AbstractRepository
-from app.database.models.models import Wish
+from app.database.models.models import CompletedWishes, Wish
 
 
 class WishRepository(AbstractRepository):
     model = Wish
     
+    async def complete_wish(self, wish_id: str, user_id: str):
+        query = (
+            select(self.model)
+            .where(
+                and_(
+                    self.model.wish_id == wish_id,
+                    self.model.user_id == user_id
+                )
+            )
+        )
+
+        result = await self._session.execute(query)
+        wish = result.scalars().first()
+
+        insert_query = (
+            insert(CompletedWishes)
+            .values(
+                user_id=user_id,
+                wish_id=wish_id,
+            )
+        )
+
+        await self._session.execute(insert_query)
+        await self._session.commit()
+
+        return wish
+
     async def update_one(self, wish_id: int, **kwargs):
+        
         query = update(self.model).where(self.model.wish_id == wish_id).values(**kwargs).returning(self.model)
         result = await self._session.execute(query)
         await self._session.commit()
