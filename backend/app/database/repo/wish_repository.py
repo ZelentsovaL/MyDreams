@@ -3,12 +3,13 @@ from app.database.abc.repository import AbstractRepository
 from app.database.models.models import Wish
 
 
-class  WishRepository(AbstractRepository):
+class WishRepository(AbstractRepository):
     model = Wish
     
     async def update_one(self, wish_id, **kwargs):
         query = update(self.model).where(self.model.wish_id == wish_id).values(**kwargs).returning(self.model)
         result = await self._session.execute(query)
+        await self._session.commit()
         return result.scalars().first()
 
     async def delete_wish(self, user_id: int, wish_id: int):
