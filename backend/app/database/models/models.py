@@ -25,7 +25,36 @@ class User(Base):
 
     completed_wishes: Mapped[List["CompletedWishes"]] = relationship("CompletedWishes", back_populates="user")
 
+    armored_wishes: Mapped[List["ArmoredWishes"]] = relationship("ArmoredWishes", back_populates="user")
 
+class ArmoredWishes(Base):
+    __tablename__ = 'armored_wishes'
+
+    armored_wish_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    wish_id: Mapped[int] = mapped_column(ForeignKey("users_wishes.wish_id"))
+    user: Mapped["User"] = relationship("User", back_populates="armored_wishes")
+    wish: Mapped["Wish"] = relationship("Wish", back_populates="armored_wishes")
+
+
+class WishesList(Base):
+    __tablename__ = 'wishes_lists'
+
+    wishes_list_id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
+    list_name: Mapped[str]
+    wishes_in_list: Mapped[List["WishesInList"]] = relationship("WishesInList", back_populates="list")
+
+class WishesInList(Base):
+    __tablename__ = 'wishes_in_list'
+
+    wishes_in_list_id: Mapped[int] = mapped_column(primary_key=True)
+    wish_id: Mapped[int] = mapped_column(ForeignKey("users_wishes.wish_id"))
+    list_id: Mapped[int] = mapped_column(ForeignKey("wishes_lists.wishes_list_id"))
+    wish: Mapped["Wish"] = relationship("Wish", back_populates="wishes_in_list")
+    list: Mapped["WishesList"] = relationship("WishesList", back_populates="wishes_in_list")
+
+    
 class UserProfile(Base):
     __tablename__ = 'user_profiles'
 
@@ -52,6 +81,9 @@ class Wish(Base):
 
     completed_wishes: Mapped[List["CompletedWishes"]] = relationship("CompletedWishes", back_populates="wish")
 
+    armored_wishes: Mapped[List["ArmoredWishes"]] = relationship("ArmoredWishes", back_populates="wish")
+
+    wishes_in_list: Mapped[List["WishesInList"]] = relationship("WishesInList", back_populates="wish")
 
 class CompletedWishes(Base):
     __tablename__ = "completed_wishes"
