@@ -92,8 +92,8 @@ class CompletedWishes(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
     wish_title: Mapped[str]
     wish_price: Mapped[float]
-    wish_source_url: Mapped[str]
-    wish_photo: Mapped[str]
+    wish_source_url: Mapped[str | None]
+    wish_photo: Mapped[str | None]
     user: Mapped["User"] = relationship("User", back_populates="completed_wishes")
 
 class Subscriptions(Base):
