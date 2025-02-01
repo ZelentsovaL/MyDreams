@@ -18,15 +18,18 @@ class WishService:
         self._session = session
         self._repo = WishRepository(self._session)
 
-    async def complete_wish(self, user_id: str, wish_id: str):
+    async def complete_wish(self, user_id: int, wish_id: str):
         return await self._repo.complete_wish(wish_id, user_id)
 
-    async def create_wish(self, user_id: str, createWish: CreateWish):
+    async def create_wish(self, user_id: int, createWish: CreateWish):
         return await self._repo.create(user_id=user_id, wish=createWish.wish, price=createWish.price, source_url=createWish.source_url, is_secret=createWish.is_secret)
     
-    async def delete_wish(self, user_id: str, wish_id: str):
+    async def delete_wish(self, user_id: int, wish_id: str):
         return await self._repo.delete_wish(user_id=user_id, wish_id=wish_id)
     
+    async def get_completed_wishes(self, user_id: int):
+        return await WishRepository(self._session).get_completed_wishes(user_id)
+
     async def update_wish(self, user_id: str, wish_id: str, update_wish: UpdateWish):
         return await self._repo.update_wish(
             user_id,

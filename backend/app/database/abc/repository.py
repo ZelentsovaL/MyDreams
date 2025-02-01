@@ -45,7 +45,7 @@ class AbstractRepository(ABC):
     async def get_by_filter_all(self, **kwargs):
         query = select(self.model).filter_by(**kwargs)
         result = await self._session.execute(query)
-        return result.scalars().all()
+        return result.mappings().all()
 
     async def get_by_filter_one(self, **kwargs):
         query = select(self.model).filter_by(**kwargs)

@@ -79,7 +79,7 @@ class Wish(Base):
     wish_photo: Mapped[str] = mapped_column(nullable=True)
     user: Mapped["User"] = relationship("User", back_populates="wishes")
 
-    completed_wishes: Mapped[List["CompletedWishes"]] = relationship("CompletedWishes", back_populates="wish")
+
 
     armored_wishes: Mapped[List["ArmoredWishes"]] = relationship("ArmoredWishes", back_populates="wish")
 
@@ -90,8 +90,10 @@ class CompletedWishes(Base):
 
     complete_wish_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
-    wish_id: Mapped[int] = mapped_column(ForeignKey("users_wishes.wish_id"))
-    wish: Mapped["Wish"] = relationship("Wish", back_populates="completed_wishes")
+    wish_title: Mapped[str]
+    wish_price: Mapped[float]
+    wish_source_url: Mapped[str]
+    wish_photo: Mapped[str]
     user: Mapped["User"] = relationship("User", back_populates="completed_wishes")
 
 class Subscriptions(Base):

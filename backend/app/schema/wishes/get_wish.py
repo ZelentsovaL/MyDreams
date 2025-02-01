@@ -11,3 +11,13 @@ class GetWish(BaseModel):
     @field_validator('wish_photo')
     def validator(cls, v):
         return f"https://mydreams.speedsolver.ru/{v}" if (v is not None) else None
+    
+class GetCompletedWish(BaseModel):
+    wish_title: str
+    wish_price: float
+    wish_source_url: str | None
+    wish_photo: str | None
+
+    @field_validator('wish_photo')
+    def validator(cls, v):
+        return f"https://mydreams.speedsolver.ru/{v}" if (v is not None) else None

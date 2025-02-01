@@ -6,6 +6,8 @@ from app.database.models.models import CompletedWishes, Wish
 class WishRepository(AbstractRepository):
     model = Wish
     
+    
+
     async def complete_wish(self, wish_id: str, user_id: str):
         query = (
             select(self.model)
@@ -24,14 +26,34 @@ class WishRepository(AbstractRepository):
             insert(CompletedWishes)
             .values(
                 user_id=user_id,
-                wish_id=wish_id,
+                wish_title=wish.wish,
+                wish_price=wish.price,
+                wish_source_url=wish.source_url,
+                wish_photo=wish.wish_photo
             )
         )
+
+        await self.delete_wish(user_id, wish_id)
 
         await self._session.execute(insert_query)
         await self._session.commit()
 
         return wish
+
+    async def get_completed_wishes(self, user_id: int):
+        query = (
+            select(CompletedWishes)
+            .where(
+                and_(
+                    CompletedWishes.user_id == user_id
+                )
+            )
+        )
+
+        result = await self._session.execute(query)
+        wishes = result.scalars().all()
+
+        return wishes
 
     async def update_one(self, wish_id: int, **kwargs):
         
