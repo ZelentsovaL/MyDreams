@@ -2,8 +2,8 @@
 
 import aiofiles
 from fastapi import UploadFile
-from sqlalchemy import UUID
-from app.database.models.models import User, Wish
+from sqlalchemy import UUID, insert, select
+from app.database.models.models import ArmoredWishes, User, Wish
 from app.database.repo.user_repository import UserRepository
 from app.database.repo.wish_repository import WishRepository
 
@@ -15,8 +15,21 @@ from app.schema.wishes.update_wish import UpdateWish
 
 class WishService:
     def __init__(self, session: AsyncSession) -> None:
+        
         self._session = session
         self._repo = WishRepository(self._session)
+
+    async def get_armored_wishes(self, user_id: int):
+        return await self._repo.get_my_armored_wishes(user_id)
+
+    async def armor_wish(self, user_id: int, wish_id: str):
+        query = insert(ArmoredWishes).values(user_id=user_id, wish_id=wish_id).returning(ArmoredWishes)
+        result = await self._session.execute(query)
+        await self._session.commit()
+        inserted: ArmoredWishes = result.scalars().first()
+        armored_wish = await self._repo.get_by_filter_one(wish_id=inserted.wish_id)
+
+        return armored_wish
 
     async def complete_wish(self, user_id: int, wish_id: str):
         return await self._repo.complete_wish(wish_id, user_id)

@@ -24,6 +24,14 @@ async def get_wishes(user: User = Depends(get_current_user), session: AsyncSessi
     all_wishes = await UserService(session).get_all_wishes(user.user_id)
     return all_wishes
 
+@wish_router.post("/armored/create/{wish_id}", response_model=GetWish)
+async def armor_wish(wish_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await WishService(session).armor_wish(user.user_id, wish_id)
+
+@wish_router.get("/armored/getall/{user_id}", response_model=list[GetWish])
+async def get_armored_wishes(user_id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await WishService(session).get_armored_wishes(user_id)
+
 @wish_router.post("/create")
 async def create_wish(create_wish: CreateWish, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     return await WishService(session).create_wish(user.user_id, create_wish)

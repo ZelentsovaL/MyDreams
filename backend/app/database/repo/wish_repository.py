@@ -1,12 +1,22 @@
 from sqlalchemy import and_, delete, insert, select, update
 from app.database.abc.repository import AbstractRepository
-from app.database.models.models import CompletedWishes, Wish
+from app.database.models.models import ArmoredWishes, CompletedWishes, Wish
 
 
 class WishRepository(AbstractRepository):
     model = Wish
     
-    
+
+    async def get_my_armored_wishes(self, user_id: int):
+        query = (
+            select(self.model)
+            .select_from(ArmoredWishes)
+            .where(self.model.user_id == user_id)
+            .join(self.model, self.model.wish_id == ArmoredWishes.wish_id)
+        )
+
+        result = await self._session.execute(query)
+        return result.scalars().all()
 
     async def complete_wish(self, wish_id: str, user_id: str):
         query = (
