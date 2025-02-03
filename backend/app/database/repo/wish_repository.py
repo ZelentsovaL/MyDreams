@@ -10,7 +10,7 @@ class WishRepository(AbstractRepository):
         query = (
             select(Wish)
             .select_from(ArmoredWishes)
-            .where(self.model.user_id == user_id)
+            .where(ArmoredWishes.user_id == user_id)
             .join(self.model, self.model.wish_id == ArmoredWishes.wish_id)
         )
 
@@ -22,7 +22,7 @@ class WishRepository(AbstractRepository):
         query = (
             select(self.model)
             .select_from(ArmoredWishes)
-            .where(self.model.user_id == user_id)
+            .where(ArmoredWishes.user_id == user_id)
             .join(self.model, self.model.wish_id == ArmoredWishes.wish_id)
         )
 
