@@ -6,6 +6,16 @@ from app.database.models.models import ArmoredWishes, CompletedWishes, Wish
 class WishRepository(AbstractRepository):
     model = Wish
     
+    async def get_profile_armored(self, user_id: int):
+        query = (
+            select(ArmoredWishes)
+            .where(self.model.user_id == user_id)
+            .join(self.model, self.model.wish_id == ArmoredWishes.wish_id)
+        )
+
+        result = await self._session.execute(query)
+        return result.mappings().all()
+
 
     async def get_my_armored_wishes(self, user_id: int):
         query = (
@@ -16,7 +26,7 @@ class WishRepository(AbstractRepository):
         )
 
         result = await self._session.execute(query)
-        return result.scalars().all()
+        return result.mappings().all()
 
     async def complete_wish(self, wish_id: str, user_id: str):
         query = (

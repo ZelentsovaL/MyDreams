@@ -34,7 +34,7 @@ async def get_armored_wishes(user_id: int, user: User = Depends(get_current_user
 
 @wish_router.get("/armoder/my/all", response_model=list[GetWish])
 async def get_armored_wishes(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    return await WishService(session).get_armored_wishes(user.user_id)
+    return await WishService(session)._repo.get_profile_armored(user.user_id)
 
 @wish_router.post("/create")
 async def create_wish(create_wish: CreateWish, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
