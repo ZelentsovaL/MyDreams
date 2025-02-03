@@ -8,7 +8,8 @@ class WishRepository(AbstractRepository):
     
     async def get_profile_armored(self, user_id: int):
         query = (
-            select(ArmoredWishes)
+            select(Wish)
+            .select_from(ArmoredWishes)
             .where(self.model.user_id == user_id)
             .join(self.model, self.model.wish_id == ArmoredWishes.wish_id)
         )
