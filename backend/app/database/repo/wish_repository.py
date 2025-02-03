@@ -15,7 +15,7 @@ class WishRepository(AbstractRepository):
         )
 
         result = await self._session.execute(query)
-        return result.mappings().all()
+        return result.scalars().all()
 
 
     async def get_my_armored_wishes(self, user_id: int):
@@ -27,7 +27,7 @@ class WishRepository(AbstractRepository):
         )
 
         result = await self._session.execute(query)
-        return result.mappings().all()
+        return result.scalars().all()
 
     async def complete_wish(self, wish_id: str, user_id: str):
         query = (
