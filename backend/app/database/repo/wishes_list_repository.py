@@ -1,7 +1,7 @@
 from sqlalchemy import RowMapping, and_, insert, select, update
 from app.database.abc.repository import AbstractRepository
-
-from app.database.models.models import Wish, WishesList
+from sqlalchemy.orm import selectinload
+from app.database.models.models import Wish, WishesInList, WishesList
 
 class WishesListRepository(AbstractRepository):
     model = WishesList
@@ -9,13 +9,10 @@ class WishesListRepository(AbstractRepository):
 
     async def get_all_wishes(self, user_id: int, list_id: int):
         query = (
-            select(Wish)
-            .select_from(self.model)
-            .where(and_(
-                self.model.user_id == user_id,
-                self.model.wishes_list_id == list_id
-            ))
-            .join(Wish, self.model.wish_id == Wish.wish_id)
+            select(self.model)
+            .options(
+                selectinload(self.model.wishes_in_list).selectinload(WishesInList.wish)
+            )
         )
 
         result = await self._session.execute(query)
