@@ -19,7 +19,7 @@ class User(Base):
 
     is_private: Mapped[Optional[bool]] = mapped_column(default=False)
     email: Mapped[str] = mapped_column(nullable=True)
-
+    photo: Mapped[Optional[str]]
     user_profile: Mapped["UserProfile"] = relationship("UserProfile", back_populates="user")\
 
     wishes: Mapped[List["Wish"]] = relationship("Wish", back_populates="user")

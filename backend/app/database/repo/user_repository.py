@@ -20,6 +20,11 @@ class UserRepository(AbstractRepository):
         return wishes
 
 
+    async def update_one(self, id, **kwargs):
+        query = update(self.model).where(self.model.user_id == id).values(**kwargs).returning(self.model)
+        result = await self._session.execute(query)
+        return result.scalars().first()
+
     async def create(self, **kwargs):
         
         query = insert(self.model).values(**kwargs).returning(self.model)
