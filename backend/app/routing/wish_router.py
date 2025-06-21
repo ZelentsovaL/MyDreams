@@ -5,7 +5,7 @@ from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 from app.database.connector.connector import get_session
 from app.database.models.models import User
 from app.schema.wishes.create_wish import CreateWish
-from app.schema.wishes.get_wish import GetCompletedWish, GetWish
+from app.schema.wishes.get_wish import GetCompletedWish, GetRecomendationWishes, GetWish
 from app.schema.wishes.update_wish import UpdateWish
 from app.security.jwt_provider.jwtmanager import get_current_user
 
@@ -21,7 +21,7 @@ wish_router = APIRouter(
     tags=["Wishes"],
 )
 
-@wish_router.get("/recomendations", response_model=List[GetWish])
+@wish_router.get("/recomendations", response_model=List[GetRecomendationWishes])
 async def get_recomendations(session: AsyncSession = Depends(get_session)):
     wishes = await UserService(session).get_recomendations()
     return random.sample(wishes, 15)

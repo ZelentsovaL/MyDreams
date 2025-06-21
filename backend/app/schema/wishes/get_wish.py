@@ -12,6 +12,14 @@ class GetWish(BaseModel):
     def validator(cls, v):
         return f"https://mydreams.speedsolver.ru/{v}" if (v is not None) else None
     
+
+class GetRecomendationWishes(BaseModel):
+    name: str
+    price: float
+    photo: str
+    description: str
+    source_url: str
+
 class GetCompletedWish(BaseModel):
     wish_title: str
     wish_price: float
