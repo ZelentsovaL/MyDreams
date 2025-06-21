@@ -19,4 +19,12 @@ class WishesListRepository(AbstractRepository):
         wishes = result.mappings().all()
         return wishes
     
-
+    async def add_to_list(self, wish_id: int, list_id: int):
+        query = (
+            insert(WishesInList)
+            .values(wish_id=wish_id, list_id=list_id)
+            .returning(WishesInList)
+        )
+        result = await self._session.execute(query)
+        await self.commit()
+        return result.scalars().first()

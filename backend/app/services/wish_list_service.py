@@ -11,6 +11,8 @@ class WishListService:
         self._session = session
         self._repo = WishesListRepository(self._session)
 
+    
+
     async def get_all(self, user_id: int):
         return await self._repo.get_by_filter_all(user_id=user_id)
 
