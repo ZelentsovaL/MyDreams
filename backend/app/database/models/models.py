@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import (
     Mapped,
@@ -17,6 +17,7 @@ class User(Base):
     username: Mapped[str] = mapped_column(unique=True)
     password: Mapped[str] = mapped_column()
 
+    is_private: Mapped[Optional[bool]] = mapped_column(default=False)
     email: Mapped[str] = mapped_column(nullable=True)
 
     user_profile: Mapped["UserProfile"] = relationship("UserProfile", back_populates="user")\

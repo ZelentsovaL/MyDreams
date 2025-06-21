@@ -28,6 +28,9 @@ services:
       - .env
     ports:
       - ${API_BASE_PORT}:8000
+
+    volumes:
+      - ~/mydreamsphotos:/app/speedsolver/backend/photos
     
     depends_on:
       - mydreams_db

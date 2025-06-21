@@ -2,6 +2,5 @@ from pydantic import BaseModel
 
 
 class UpdateProfile(BaseModel):
-    surname: str
-    name: str
-    patronymic: str
+    username: str
+    is_private: str
