@@ -34,7 +34,11 @@ async def register(access: Access, session: AsyncSession = Depends(get_session))
     registered = await UserService(session).register(access)
     if registered.error:
         raise HTTPException(status_code=400, detail=registered.error)
-    return registered.value
+    token = JWTManager().encode_token({"userId": registered.value})
+    return AccessToken(
+        access_token=token,
+        token_type="Bearer"
+    )
     
 @access_router.post("/login")
 async def login(username: str = Form(), password: str = Form(), session: AsyncSession = Depends(get_session)):

@@ -14,11 +14,11 @@ class User(Base):
     __tablename__ = 'users'
 
     user_id: Mapped[int] = mapped_column(primary_key=True)
-    username: Mapped[str] = mapped_column(unique=True)
+    username: Mapped[str] = mapped_column()
     password: Mapped[str] = mapped_column()
 
     is_private: Mapped[Optional[bool]] = mapped_column(default=False)
-    email: Mapped[str] = mapped_column(nullable=True)
+    email: Mapped[str] = mapped_column(nullable=True, unique=True)
     photo: Mapped[Optional[str]]
     user_profile: Mapped["UserProfile"] = relationship("UserProfile", back_populates="user")\
 
