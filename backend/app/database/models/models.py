@@ -44,6 +44,7 @@ class WishesList(Base):
     wishes_list_id: Mapped[int] = mapped_column(primary_key=True)
     user_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
     list_name: Mapped[str]
+    description: Mapped[Optional[str]]
     wishes_in_list: Mapped[List["WishesInList"]] = relationship("WishesInList", back_populates="list")
 
 class WishesInList(Base):

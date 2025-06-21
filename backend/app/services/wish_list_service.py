@@ -11,10 +11,11 @@ class WishListService:
         self._session = session
         self._repo = WishesListRepository(self._session)
 
-    async def create(self, user_id: int, list_name: str):
+    async def create(self, user_id: int, list_name: str, desc: str):
         return await self._repo.create(
             user_id=user_id,
-            list_name=list_name
+            list_name=list_name,
+            description=desc
         )
     
     async def get_wishes(self, user_id: int, list_id: int):
