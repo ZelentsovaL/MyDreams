@@ -11,6 +11,10 @@ class UserService:
         self._repo = UserRepository(self._session)
 
 
+    async def is_user_exists(self, email: str) -> bool:
+        user = await self._repo.get_by_filter_one(email=email)
+        return True if user else False
+
     async def register(self, access: Access) -> result.Result[dict]:
         try:
             registered = await self._repo.create(**access.model_dump())

@@ -20,6 +20,10 @@ from sqlalchemy import (
 from sqlalchemy.ext.asyncio import AsyncSession
 access_router = APIRouter()
 
+@access_router.get("/user/exists")
+async def is_user_exists(email: str):
+    return await UserService().is_user_exists(email)
+
 @access_router.post("/register")
 async def register(access: Access, session: AsyncSession = Depends(get_session)):
     registered = await UserService(session).register(access)
