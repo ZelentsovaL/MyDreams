@@ -13,9 +13,7 @@ class UserService:
 
     async def register(self, access: Access) -> result.Result[dict]:
         try:
-            registered = await self._repo.create(
-                username=access.username, 
-                password=access.password)
+            registered = await self._repo.create(**access.model_dump())
             return result.success(registered.user_id)
         except IntegrityError:
             return result.error("Такой пользователь уже есть.")
