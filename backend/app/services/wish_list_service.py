@@ -11,6 +11,9 @@ class WishListService:
         self._session = session
         self._repo = WishesListRepository(self._session)
 
+    async def get_all(self, user_id: int):
+        return await self._repo.get_by_filter_all(user_id=user_id)
+
     async def create(self, user_id: int, list_name: str, desc: str):
         return await self._repo.create(
             user_id=user_id,
