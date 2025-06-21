@@ -16,11 +16,10 @@ class UserService:
         return True if user else False
 
     async def register(self, access: Access) -> result.Result[dict]:
-        try:
-            registered = await self._repo.create(**access.model_dump())
-            return result.success(registered.user_id)
-        except IntegrityError:
-            return result.error("Такой пользователь уже есть.")
+        
+        registered = await self._repo.create(**access.model_dump())
+        return result.success(registered.user_id)
+
 
         
     async def get_all_wishes(self, user_id: int) -> result.Result[None]:
