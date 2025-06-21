@@ -1,3 +1,5 @@
+import random
+from typing import List
 from fastapi import APIRouter, Depends, File, HTTPException, UploadFile
 
 from app.database.connector.connector import get_session
@@ -18,6 +20,11 @@ wish_router = APIRouter(
     prefix="/wishes",
     tags=["Wishes"],
 )
+
+@wish_router.get("/recomendations", response_model=List[GetWish])
+async def get_recomendations(session: AsyncSession = Depends(get_session)):
+    wishes = await UserService(session).get_recomendations()
+    return random.sample(wishes, 15)
 
 @wish_router.get("/getall", response_model=list[GetWish])
 async def get_wishes(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):

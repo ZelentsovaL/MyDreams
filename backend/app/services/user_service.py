@@ -1,15 +1,25 @@
+
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.repo.user_repository import UserRepository
 from app.schema.access import Access
 from sqlalchemy.exc import IntegrityError
 from app.utils.ext import result
+from app.database.models.models import RecomendationWishes
 class UserService:
 
     def __init__(self, session: AsyncSession):
         self._session = session
         self._repo = UserRepository(self._session)
 
+    async def get_recomendations(self):
+        query = (
+            select(RecomendationWishes)
+        )
+
+        result = await self._session.execute(query)
+        return result.scalars().all()
 
     async def is_user_exists(self, email: str) -> bool:
         user = await self._repo.get_by_filter_one(email=email)

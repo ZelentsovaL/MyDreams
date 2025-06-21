@@ -87,6 +87,15 @@ class Wish(Base):
 
     wishes_in_list: Mapped[List["WishesInList"]] = relationship("WishesInList", back_populates="wish")
 
+class RecomendationWishes(Base):
+    __tablename__ = "recomendation_wishes"
+    id: Mapped[int] = mapped_column(primary_key=True)
+    name: Mapped[str]
+    price: Mapped[float]
+    photo: Mapped[Optional[str]]
+    description: Mapped[Optional[str]]
+    source_url: Mapped[Optional[str]]
+
 class CompletedWishes(Base):
     __tablename__ = "completed_wishes"
 
