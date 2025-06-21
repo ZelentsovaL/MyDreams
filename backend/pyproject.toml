@@ -14,7 +14,7 @@ python-jose = "^3.3.0"
 python-multipart = "^0.0.20"
 sqlalchemy = "^2.0.37"
 asyncpg = "^0.30.0"
-pydantic = "^2.10.5"
+pydantic = {extras = ["email"], version = "^2.11.7"}
 pydantic-settings = "^2.7.1"
 yarl = "^1.18.3"
 greenlet = "^3.1.1"
