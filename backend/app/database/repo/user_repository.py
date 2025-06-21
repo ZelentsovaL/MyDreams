@@ -40,7 +40,7 @@ class UserRepository(AbstractRepository):
     async def get_by_login(self, username: str):
         query = (
             select(self.model)
-            .where(self.model.username == username)
+            .where(self.model.email == username)
         )
 
         query_result = await self._session.execute(query)
