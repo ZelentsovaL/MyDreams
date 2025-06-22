@@ -18,6 +18,8 @@ from sqlalchemy import (
 )
 
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.utils.ext.result import Result
 access_router = APIRouter()
 
 @access_router.get("/user/exists")
@@ -42,11 +44,11 @@ async def register(access: Access, session: AsyncSession = Depends(get_session))
     
 @access_router.post("/login")
 async def login(username: str = Form(), password: str = Form(), session: AsyncSession = Depends(get_session)):
-    user = await UserService(session).login(username, password)
+    user: Result[User] = await UserService(session).login(username, password)
     if not user.success:
         raise HTTPException(status_code=400, detail=user.error)
     
-    token = JWTManager().encode_token({"userId": user.value.user_id})
+    token = JWTManager().encode_token({"userId": user.value.user_id, "username": user.value.username})
     return AccessToken(
         access_token=token,
         token_type="Bearer"
