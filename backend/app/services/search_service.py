@@ -14,8 +14,8 @@ class SearchService:
     async def search_by_username(self, username: str):
         return await self._repo.search_by_login(username)
     
-    async def get_wishes_by_username(self, username: str):
-        user = await self._repo.get_by_filter_one(username=username)
+    async def get_wishes_by_username(self, id: int):
+        user = await self._repo.get_by_id(id)
         if user is None:
             raise HTTPException(
                 status_code=400,

@@ -36,5 +36,5 @@ async def get_subscribers(user: User = Depends(get_current_user), session: Async
     return await SubscribeService(session).get_subscribers(user.user_id)
 
 @friends_router.get("/wishes/{username}")
-async def search_by_username(username: str, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    return await SearchService(session).get_wishes_by_username(username)
+async def search_by_username(id: int, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    return await SearchService(session).get_wishes_by_username(id)
