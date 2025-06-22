@@ -23,6 +23,7 @@ class UserRepository(AbstractRepository):
     async def update_one(self, id, **kwargs):
         query = update(self.model).where(self.model.user_id == id).values(**kwargs).returning(self.model)
         result = await self._session.execute(query)
+        await self._session.commit()
         return result.scalars().first()
 
     async def create(self, **kwargs):
